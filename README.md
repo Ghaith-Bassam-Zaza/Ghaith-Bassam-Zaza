@@ -1,6 +1,6 @@
 # Hi there! I'm Ghaith Zaza 👋
 
-### Junior AI Engineer
+### AI Engineer 
 
 I'm a passionate software engineer with a degree in Computer and Systems Engineering from Ain Shams University. My expertise lies in AI, Machine Learning, and full-stack development, with a keen interest in building innovative solutions that bridge the gap between cutting-edge technology and user-centric design.
 
