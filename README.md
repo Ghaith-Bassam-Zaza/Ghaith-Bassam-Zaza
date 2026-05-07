@@ -1,64 +1,63 @@
-# Hi there! I'm Ghaith Zaza 👋
+# Ghaith Zaza
 
-### AI Engineer 
+### AI Engineer | Agentic Systems, LLM Applications, Production AI Infrastructure
 
-I'm a passionate software engineer with a degree in Computer and Systems Engineering from Ain Shams University. My expertise lies in AI, Machine Learning, and full-stack development, with a keen interest in building innovative solutions that bridge the gap between cutting-edge technology and user-centric design.
+I build autonomous AI systems and production-grade LLM applications. My background is in Computer and Systems Engineering, and over the past couple of years I have shifted fully into AI engineering — architecting multi-agent orchestration layers, designing RAG pipelines, and shipping real-world AI products from prompt to deployment.
 
----
-
-### 📫 Let's Connect:
-- **LinkedIn:** [linkedin.com/in/ghaith-zaza](https://www.linkedin.com/in/ghaith-zaza)  
-- **Portfolio:** [ghaith-bassam-zaza.github.io](https://ghaith-bassam-zaza.github.io/portfolio/index.html)
+Currently based in Dubai, UAE.
 
 ---
 
-### 🚀 About Me:
-- **🌍 Based in:** Dubai, UAE  
-- **📚 Education:** Bachelor's in Computer and Systems Engineering (Cumulative GPA: 3.17/4.0)  
-- **🧠 Specialties:** AI, Machine Learning, Deep Learning, NLP, Computer Vision  
-- **📜 Graduation Project:** "Digital Twin for Car with AI for Self-Driving Capabilities" (Grade: A)
+### Connect
+
+- [LinkedIn](https://www.linkedin.com/in/ghaith-zaza-95b1311b7/)
+- [Portfolio](https://ghaith-bassam-zaza.github.io/portfolio/)
 
 ---
 
-### 🛠️ Technical Skills:
-- **Programming Languages:** Java, Python, C++, JavaScript, MATLAB
-- **Frameworks & Libraries:** Flask, Django, Spring Boot, TensorFlow, PyTorch
-- **Frontend:** HTML, CSS, JavaScript, ReactJS
-- **Databases:** SQL (PostgreSQL, MySQL, MS SQL Server), NoSQL (MongoDB)
-- **DevOps Tools:** Git, Jenkins, AWS
-- **Other Skills:** Assembly (ARM, MIPS), Embedded Systems, UML Diagrams, Design Patterns
-- **Soft Skills:** Problem-solving, Analytical Thinking, Teamwork, Adaptability
+### What I Work With
+
+**Generative AI and LLMs**
+LangChain, LangGraph, AutoGen, Semantic Kernel, Azure AI Foundry, Azure OpenAI Service, OpenAI GPT-4, Claude (Anthropic), RAG Pipelines, Prompt Engineering, LLM Fine-tuning, Multi-Agent Systems, Function Calling, n8n, Vector DBs (Pinecone, pgvector)
+
+**Machine Learning and Data**
+TensorFlow, PyTorch, Scikit-learn, NLP, Computer Vision, Neural Networks, Deep Learning, Embeddings, PostgreSQL, MySQL, MongoDB, Neon, Data Pipelines
+
+**Backend and APIs**
+Python (FastAPI, Flask, Django), Java (Spring Boot), RESTful APIs, Microservices, WebSockets, Serverless
+
+**Frontend**
+React.js, Next.js, TypeScript, JavaScript, Tailwind CSS
+
+**DevOps and Cloud**
+Docker, Kubernetes, GitHub Actions, CI/CD, AWS, Railway, MLflow, Model Deployment and Monitoring
 
 ---
 
-### 🌟 Projects:
-#### **AI/ML Projects:**
-- **Forecasting Sticker Sales:** Sales prediction using TensorFlow and Scikit-learn.
-- **Disaster Tweets NLP:** Classification of disaster-related tweets with RoBERTa and TensorFlow.
-- **Titanic Survival Prediction:** Machine learning model for passenger survival analysis.
-- **Chatbot with Python:** Deep learning-based conversational AI chatbot.
-- **COVID-19 Outcome Prediction:** Predictive analysis of patient outcomes with TensorFlow.
+### Featured Projects
 
-#### **Web Development:**
-- **Chatbot Generation Platform:** Multi-user web app with Flask, PostgreSQL, and OpenAI API.
-- **E-commerce Backend:** Backend design using Java Spring Boot.
-- **Social Media Web App:** Full-stack platform using Flask and native JavaScript.
+**Autonomous Social Media Orchestrator**
+A fully autonomous content engine that handles the entire pipeline from trend research to published video. It pulls from Google Trends, Google News, and Brave Search before generating scripts, runs them through an evaluation engine, then produces avatar-based videos via HeyGen with voice cloning and character controls. Averages 22 ms API response time on Neon and Railway. No human in the loop.
 
-#### **Desktop Applications:**
-- **Process Scheduling Simulator:** Java-based app for process scheduling visualization.
-- **XML Editor:** Advanced editor with formatting, compression, and JSON conversion features.
-- **COVID-19 Analysis Tool:** MATLAB GUI for data trend visualization.
+**AI-Driven Real Estate Sales Agent**
+An autonomous sales platform that qualifies leads through natural language chat, auto-books meetings for human agents once a lead is ready, and syncs everything to a custom CRM. Includes a full admin dashboard for listings, services, and pipeline visibility.
+
+**Enterprise Chatbot Deployment Engine**
+A SaaS platform where users build custom AI chatbots by pointing it at their URLs. It scrapes, chunks, embeds via pgvector, and serves answers through a RAG pipeline with re-ranking. Multi-tenant with Bot ID isolation and embeddable JS for any website.
+
+**Digital Twin for Autonomous Vehicles** *(Graduation Project, Grade: A)*
+A simulation environment for self-driving vehicles using CNN and YOLO-based perception pipelines for real-time object detection and autonomous decision-making. Grade: A.
 
 ---
 
-### 🎓 Certifications:
-- **Machine Learning Specialization:** Stanford University (Coursera)
-- **DevOps Beginners to Advanced:** Udemy
-- **Financial Accounting Fundamentals:** University of Virginia (Coursera)
-- **Mastering Programming with MATLAB:** Vanderbilt University (Coursera)
+### Certifications
+
+- Machine Learning Specialization, Stanford University (Coursera)
+- DevOps Beginners to Advanced, Udemy
+- Azure AI Foundry, Semantic Kernel, AutoGen, Logic Apps (Microsoft Learn)
 
 ---
 
-### 💡 Fun Fact:
-I love exploring how AI can solve real-world problems and enjoy tackling challenging projects that push the boundaries of innovation. Feel free to reach out if you'd like to collaborate or discuss ideas!
+### Education
 
+B.Eng., Computer and Systems Engineering, Ain Shams University, Cairo, Egypt. GPA: 3.17/4.0.
