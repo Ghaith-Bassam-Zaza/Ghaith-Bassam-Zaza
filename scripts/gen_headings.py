@@ -21,15 +21,16 @@ BASE = 19
 
 SECTIONS = [
     ("about", "about"),
+    ("work", "work"),
     ("stack", "stack"),
     ("projects", "projects"),
     ("pipeline", "how i build"),
     ("stats", "stats"),
-    ("colophon", "about this page"),
 ]
 
 
 def build(text: str) -> str:
+    C.reset_ids()
     parts = []
 
     # A small square that snaps in first. It gives the rule something to start

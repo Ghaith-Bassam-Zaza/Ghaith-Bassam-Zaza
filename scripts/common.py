@@ -136,13 +136,23 @@ def _next_id(prefix: str) -> str:
     return f"{prefix}{_uid[0]}"
 
 
+def reset_ids() -> None:
+    """Restart id numbering, for generators that write several files per run.
+
+    The counter is process-global, so without this, inserting one new heading
+    renumbers the clip ids in every heading after it and they all show up as
+    modified. Diffs should mean something.
+    """
+    _uid[0] = 0
+
+
 def wipe(body: str, x: float, y: float, w: float, h: float,
          begin: float, dur: float) -> str:
     """Reveal `body` by growing a clip rect left to right.
 
-    This is the workhorse. Bars grow with it, rows of text type with it, the
-    timeline draws with it — one primitive, so everything on the page shares a
-    single sense of how motion starts and stops.
+    This is the workhorse. Bars grow with it, headings rule themselves in with
+    it, the portrait types itself out with it -- one primitive, so everything
+    on the page shares a single sense of how motion starts and stops.
     """
     cid = _next_id("w")
     return (

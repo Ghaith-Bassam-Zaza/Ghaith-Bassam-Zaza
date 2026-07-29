@@ -22,6 +22,44 @@ TOKEN = os.environ.get("STATS_TOKEN") or os.environ.get("GITHUB_TOKEN") or ""
 API = "https://api.github.com"
 UA = "profile-readme-generator (+https://github.com/%s)" % LOGIN
 
+# Set GH_CACHE=1 to reuse the last successful fetch instead of hitting the API.
+# Language bytes cost one request per repository, so three runs exhaust the
+# unauthenticated 60/hour allowance -- and you will want more than three runs
+# while nudging a label. Opt-in rather than automatic, so CI (which never sets
+# it) can never serve stale numbers.
+CACHE_PATH = os.path.join(
+    os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+    "_render", "ghcache.json",
+)
+USE_CACHE = os.environ.get("GH_CACHE") == "1"
+
+
+def _cache_read(key: str):
+    if not USE_CACHE or not os.path.exists(CACHE_PATH):
+        return None
+    try:
+        with open(CACHE_PATH, encoding="utf-8") as fh:
+            hit = json.load(fh).get(key)
+    except (OSError, ValueError):
+        return None
+    if hit is not None:
+        print(f"  {key}: from cache (GH_CACHE=1)")
+    return hit
+
+
+def _cache_write(key: str, value) -> None:
+    os.makedirs(os.path.dirname(CACHE_PATH), exist_ok=True)
+    blob = {}
+    if os.path.exists(CACHE_PATH):
+        try:
+            with open(CACHE_PATH, encoding="utf-8") as fh:
+                blob = json.load(fh)
+        except (OSError, ValueError):
+            blob = {}
+    blob[key] = value
+    with open(CACHE_PATH, "w", encoding="utf-8") as fh:
+        json.dump(blob, fh)
+
 
 def _get(url: str, accept: str = "application/vnd.github+json") -> bytes:
     req = urllib.request.Request(url, headers={"User-Agent": UA, "Accept": accept})
@@ -117,6 +155,9 @@ def _contributions_public() -> list[tuple[date, int]]:
 
 def repos() -> list[dict]:
     """Public, non-fork repositories, newest first."""
+    hit = _cache_read("repos")
+    if hit is not None:
+        return hit
     out, page = [], 1
     while True:
         chunk = json.loads(
@@ -128,6 +169,7 @@ def repos() -> list[dict]:
         page += 1
     keep = [r for r in out if not r["fork"]]
     print(f"  repos: {len(keep)} public")
+    _cache_write("repos", keep)
     return keep
 
 
@@ -142,6 +184,9 @@ def language_bytes(rs: list[dict]) -> tuple[dict[str, int], list[str]]:
     the rate limit bites, dropping four repos shifted the top language by three
     points. The caller is expected to refuse to write a partial chart.
     """
+    hit = _cache_read("language_bytes")
+    if hit is not None:
+        return hit, []
     totals: dict[str, int] = {}
     failed: list[str] = []
     for r in rs:
@@ -153,7 +198,10 @@ def language_bytes(rs: list[dict]) -> tuple[dict[str, int], list[str]]:
             continue
         for name, n in langs.items():
             totals[name] = totals.get(name, 0) + n
-    return dict(sorted(totals.items(), key=lambda kv: -kv[1])), failed
+    ordered = dict(sorted(totals.items(), key=lambda kv: -kv[1]))
+    if not failed:
+        _cache_write("language_bytes", ordered)
+    return ordered, failed
 
 
 def language_repos(rs: list[dict]) -> dict[str, int]:

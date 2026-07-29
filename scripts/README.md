@@ -11,8 +11,8 @@ pip install -r scripts/requirements.txt
 | `gen_portrait.py` | `portrait.svg` | only when `me.png` changes |
 | `gen_headings.py` | `hd-*.svg` | when a section is renamed |
 | `gen_pipeline.py` | `pipeline.svg` | when the agent diagram changes |
-| `gen_constellation.py` | `constellation.svg` | when the stack changes — edit `ITEMS` |
-| `gen_stats.py` | `stats · streak · langs · year · timeline` | daily, in CI |
+| `gen_stack.py` | `stack.svg` | when the stack changes — edit `GROUPS` |
+| `gen_stats.py` | `stats · streak · langs · year` | daily, in CI |
 
 `gen_stats.py` takes graphic names to redraw a subset, and then fetches only what
 those need:
@@ -22,8 +22,12 @@ python scripts/gen_stats.py stats year
 ```
 
 `stats`, `streak` and `year` come from the contributions grid, which has no API
-quota. `timeline` and `langs` cost one request per repository — so while you are
-nudging a label two pixels, name the graphic and stay off the rate limit.
+quota. `langs` costs one request per repository — so while you are nudging a label
+two pixels, name the graphic and stay off the rate limit.
+
+When you are iterating on `langs` specifically, set `GH_CACHE=1` to reuse the last
+successful fetch instead of re-requesting all nineteen repositories. CI never sets
+it, so it can't serve stale numbers into a commit.
 
 `common.py` holds the palette, the font subsetter and the animation primitives;
 change a colour there and re-run everything. `ghdata.py` is the API layer — it

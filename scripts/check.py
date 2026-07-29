@@ -138,6 +138,29 @@ def check(path: str) -> list[str]:
     return problems
 
 
+def check_readme() -> list[str]:
+    """README references and the files on disk have to agree.
+
+    A renamed or deleted graphic leaves a broken image on the profile, and
+    an orphaned SVG is dead weight in the repo. Neither shows up in the
+    per-file checks because both files are individually fine.
+    """
+    path = os.path.join(ROOT, "README.md")
+    if not os.path.exists(path):
+        return ["README.md missing"]
+
+    source = open(path, encoding="utf-8").read()
+    referenced = set(re.findall(r'src="\./([^"]+\.svg)"', source))
+    on_disk = {os.path.basename(p) for p in glob.glob(os.path.join(ROOT, "*.svg"))}
+
+    problems = []
+    for name in sorted(referenced - on_disk):
+        problems.append(f"README references {name}, which does not exist")
+    for name in sorted(on_disk - referenced):
+        problems.append(f"{name} exists but nothing in the README shows it")
+    return problems
+
+
 def main() -> int:
     files = sorted(glob.glob(os.path.join(ROOT, "*.svg")))
     if not files:
@@ -152,6 +175,12 @@ def main() -> int:
         print(f"  {mark} {os.path.basename(path)}")
         for p in problems:
             print(f"       - {p}")
+
+    readme = check_readme()
+    total += len(readme)
+    print(f"  {'FAIL' if readme else 'ok  '} README.md")
+    for p in readme:
+        print(f"       - {p}")
 
     print(f"\n{len(files)} file(s), {total} problem(s)")
     return 1 if total else 0

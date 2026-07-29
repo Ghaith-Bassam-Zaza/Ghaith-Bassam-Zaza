@@ -20,8 +20,9 @@ PANELS = [
     ("portrait.svg", 460),
     ("stats.svg", 620),
     ("hd-about.svg", 620),
+    ("hd-work.svg", 620),
     ("hd-stack.svg", 620),
-    ("constellation.svg", 620),
+    ("stack.svg", 620),
     ("hd-projects.svg", 620),
     ("hd-pipeline.svg", 620),
     ("pipeline.svg", 620),
@@ -29,8 +30,6 @@ PANELS = [
     ("streak.svg", 620),
     ("langs.svg", 620),
     ("year.svg", 620),
-    ("timeline.svg", 620),
-    ("hd-colophon.svg", 620),
 ]
 
 PAGE = """<!doctype html><meta charset="utf-8"><title>profile preview</title>

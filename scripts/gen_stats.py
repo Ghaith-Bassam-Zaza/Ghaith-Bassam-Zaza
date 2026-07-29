@@ -160,8 +160,8 @@ LANG_ALIAS = {
 }
 
 
-def _lang_column(entries, x, width, title, fmt, begin) -> list[str]:
-    parts = [C.fade_in(C.label(x, 12, title), begin)]
+def _lang_column(entries, x, width, title, fmt, begin, top) -> list[str]:
+    parts = [C.fade_in(C.label(x, top - 18, title), begin)]
     if not entries:
         return parts
     total = sum(v for _, v in entries) or 1
@@ -170,7 +170,7 @@ def _lang_column(entries, x, width, title, fmt, begin) -> list[str]:
     bar_x = x + name_w + gap
     bar_w = width - name_w - gap - 52
     for i, (name, value) in enumerate(entries):
-        y = 32 + i * 19
+        y = top + i * 19
         t = begin + 0.14 + i * 0.07
         short = LANG_ALIAS.get(name, name)
         short = short if len(short) <= 13 else short[:12] + "…"
@@ -198,18 +198,35 @@ def _lang_column(entries, x, width, title, fmt, begin) -> list[str]:
 
 def langs_svg(by_bytes, by_repo) -> str:
     rows = 6
-    H = 32 + rows * 19 + 6
+    top = 50
+    H = top + rows * 19 + 6
     left = list(by_bytes.items())[:rows]
     right = list(by_repo.items())[:rows]
     col = 288
-    parts = _lang_column(left, 0, col, "BY BYTES",
-                         lambda v, t: f"{100 * v / t:.1f}%", 0.05)
+
+    # Said outright, on the graphic itself. This counts public repositories and
+    # nothing else -- mostly coursework and Kaggle notebooks -- while the work
+    # that actually represents him lives in private repos it cannot see. A
+    # reader who takes this for a summary of his output is being misled, and a
+    # caption is the cheapest possible fix.
+    parts = [
+        C.fade_in(C.label(0, 11, "PUBLIC REPOSITORIES ONLY", cls="mut-f"), 0.02),
+        C.fade_in(
+            C.text(W - 3, 11, "private work is not counted here", size=9,
+                   cls="dim-f", anchor="end"),
+            0.06,
+        ),
+        C.draw_line(f"M0 20H{W}", W, 0.10, 0.6, "dim-s", 1.0),
+    ]
+    parts += _lang_column(left, 0, col, "BY BYTES",
+                          lambda v, t: f"{100 * v / t:.1f}%", 0.14, top)
     # The right column's values are end-anchored, so it stops short of the
     # canvas rather than setting them flush against the edge.
     parts += _lang_column(right, W - col, col - 4, "BY REPO",
-                          lambda v, t: f"{v}", 0.15)
+                          lambda v, t: f"{v}", 0.22, top)
     body = "".join(parts)
-    return C.svg(W, H, body, _faces(body), title="languages")
+    return C.svg(W, H, body, _faces(body),
+                 title="languages across public repositories only")
 
 
 # ------------------------------------------------------------------- year
@@ -294,114 +311,6 @@ def year_svg(days, s) -> str:
     return C.svg(W, H, body, _faces(body), title="the year, one character per day")
 
 
-# --------------------------------------------------------------- timeline
-
-def timeline_svg(rs) -> str:
-    """Public repos on a time axis, so the arc of the work is visible.
-
-    Labels are packed into lanes rather than stacked at fixed offsets: four of
-    these repos were created on the same day in 2022 and would otherwise print
-    on top of each other.
-    """
-    items = sorted(
-        ((date.fromisoformat(r["created_at"][:10]), r["name"], r.get("language"))
-         for r in rs),
-        key=lambda t: t[0],
-    )
-    if not items:
-        return C.svg(W, 40, "", C.embed_font(" "))
-
-    lo, hi = items[0][0], items[-1][0]
-    span_days = max((hi - lo).days, 1)
-    pad_l, pad_r = 4, 8
-    plot_w = W - pad_l - pad_r
-    FS = 8.4
-
-    def px(d: date) -> float:
-        return pad_l + plot_w * ((d - lo).days / span_days)
-
-    lanes: list[float] = []
-    placed = []
-    for d, name, lang in items:
-        x = px(d)
-        label_w = 9 + len(name) * FS * C.ADVANCE_EM
-        # Near the right edge there is no room to the right of the dot, so the
-        # label hangs off the other side instead of running past the canvas.
-        flip = x + label_w > W
-        span_a = x - label_w if flip else x
-        span_b = x if flip else x + label_w
-        for li, end in enumerate(lanes):
-            if span_a >= end + 5:
-                lanes[li] = span_b
-                placed.append((li, x, d, name, flip))
-                break
-        else:
-            lanes.append(span_b)
-            placed.append((len(lanes) - 1, x, d, name, flip))
-
-    lane_h = 15.0
-    top = 44
-    axis_y = top + len(lanes) * lane_h + 8
-    H = int(axis_y + 26)
-
-    parts = [
-        C.fade_in(C.label(0, 12, "PUBLIC REPOS"), 0.05),
-        C.fade_in(
-            C.text(0, 30, f"{len(items)} repositories, {lo.year} to {hi.year}",
-                   size=10.5, cls="mut-f"),
-            0.12,
-        ),
-    ]
-
-    parts.append(C.draw_line(f"M0 {axis_y}H{W}", W, 0.2, 0.9, "dim-s", 1.0))
-
-    for year in range(lo.year, hi.year + 1):
-        d = date(year, 1, 1)
-        if not (lo <= d <= hi):
-            continue
-        x = px(d)
-        parts.append(
-            C.draw_line(f"M{x:.1f} {axis_y - 4}V{axis_y + 4}", 8, 0.4, 0.3,
-                        "dim-s", 1.0)
-        )
-        parts.append(
-            C.fade_in(
-                C.text(x, axis_y + 18, str(year), size=8.5, cls="dim-f",
-                       anchor="middle"),
-                0.45,
-            )
-        )
-
-    newest = max(d for d, _, _ in items)
-    for li, x, d, name, flip in placed:
-        y = top + li * lane_h
-        t = 0.5 + (x / W) * 0.9
-        recent = d == newest
-        cls = "hot-f" if recent else "ink-f"
-        parts.append(
-            f'<circle cx="{x:.1f}" cy="{y:.1f}" r="0" class="{cls}">'
-            f'<animate attributeName="r" from="0" to="2.6" begin="{t:.2f}s" '
-            f'dur="0.4s" fill="freeze" calcMode="spline" '
-            f'keySplines="0.2 1.5 0.3 1" keyTimes="0;1"/></circle>'
-        )
-        parts.append(
-            C.draw_line(f"M{x:.1f} {y + 3:.1f}V{axis_y:.1f}", axis_y - y,
-                        t, 0.35, "dim-s", 0.6)
-        )
-        parts.append(
-            C.fade_in(
-                C.text(x - 7 if flip else x + 7, y + 3, name, size=FS,
-                       cls="emp-f" if recent else "mut-f",
-                       anchor="end" if flip else "start"),
-                t + 0.08,
-                0.35,
-            )
-        )
-
-    body = "".join(parts)
-    return C.svg(W, H, body, _faces(body), title="public repositories over time")
-
-
 # ------------------------------------------------------------------- glue
 
 def _faces(body: str) -> str:
@@ -416,7 +325,6 @@ NEEDS = {
     "stats": "contributions",
     "streak": "contributions",
     "year": "contributions",
-    "timeline": "repos",
     "langs": "repos",
 }
 
@@ -447,8 +355,6 @@ def main(only: set[str] | None = None) -> None:
         changed += C.write("streak.svg", streak_svg(s))
     if "year" in wanted:
         changed += C.write("year.svg", year_svg(days, s))
-    if "timeline" in wanted:
-        changed += C.write("timeline.svg", timeline_svg(rs))
     if "langs" in wanted:
         if failed:
             # Percentages of an incomplete total are simply wrong. Leave the
