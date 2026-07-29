@@ -1,0 +1,53 @@
+name: redraw stats
+
+# The data graphics are committed files, not live badge requests, so something
+# has to redraw them. This does, once a day, and commits only what moved.
+#
+# Token: works as-is with the built-in GITHUB_TOKEN, which sees public activity.
+# To count private contributions as well, create a fine-grained PAT with the
+# "Profile: read" / classic `read:user` scope and save it as a repository
+# secret named STATS_TOKEN. Nothing else needs to change.
+
+on:
+  schedule:
+    - cron: "17 4 * * *"   # 04:17 UTC daily, off the hour to dodge the rush
+  workflow_dispatch:        # and a manual button, for when you want it now
+
+permissions:
+  contents: write
+
+concurrency:
+  group: redraw-stats
+  cancel-in-progress: false
+
+jobs:
+  redraw:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: install
+        run: pip install --quiet fonttools brotli
+
+      - name: redraw
+        env:
+          GH_LOGIN: ${{ github.repository_owner }}
+          STATS_TOKEN: ${{ secrets.STATS_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python scripts/gen_stats.py
+
+      - name: commit if anything moved
+        run: |
+          if [ -z "$(git status --porcelain -- '*.svg')" ]; then
+            echo "nothing changed today"
+            exit 0
+          fi
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- '*.svg'
+          git commit -m "redraw stats ($(date -u +%Y-%m-%d))"
+          git push

@@ -1,59 +1,100 @@
-# Hi, I'm Ghaith Zaza 👋
+<div align="center">
 
-### AI Engineer | Agentic Systems, LLM Applications, Production AI Infrastructure
+<img src="./portrait.svg" width="460" alt="Ghaith Zaza"/>
 
-I build autonomous AI systems and production-grade LLM applications. My background is in Computer and Systems Engineering, and I have shifted fully into AI engineering — architecting multi-agent orchestration layers, designing RAG pipelines, and shipping real-world AI products from prompt to deployment.
+<img src="./stats.svg" width="620" alt="Contributions in the last year"/>
 
----
+[portfolio](https://ghaith-bassam-zaza.github.io/portfolio/) &nbsp;·&nbsp;
+[linkedin](https://www.linkedin.com/in/ghaith-zaza-95b1311b7/)
 
-### 📫 Let's Connect
-- **LinkedIn:** [linkedin.com/in/ghaith-zaza](https://www.linkedin.com/in/ghaith-zaza-95b1311b7/)
-- **Portfolio:** [ghaith-bassam-zaza.github.io](https://ghaith-bassam-zaza.github.io/portfolio/)
+</div>
 
----
+<img src="./hd-about.svg" width="620" alt="about"/>
 
-### 🚀 About Me
-- **🌍 Based in:** Dubai, UAE
-- **📚 Education:** B.Eng., Computer and Systems Engineering, Ain Shams University (GPA: 3.17/4.0)
-- **🧠 Specialties:** Agentic AI, LLM Engineering, RAG Pipelines, Multi-Agent Systems, NLP, Computer Vision
-- **📜 Graduation Project:** "Digital Twin for Autonomous Vehicles with AI for Self-Driving Capabilities" (Grade: A)
+> AI engineer in Dubai. Computer and Systems Engineering, then all the way into AI.<br>
+> Autonomy is the easy half. Being trusted in production is the other one.
 
----
+I build agentic systems: planners that decide what to do next, retrieval that<br>
+gives them something true to work from, and evaluators that stop the bad runs<br>
+before anyone sees them. Most of what I ship is the unglamorous part — the<br>
+retries, the guardrails, the tracing you need at 2am.
 
-### 🛠️ What I Work With
+<img src="./hd-stack.svg" width="620" alt="stack"/>
 
-**🤖 Generative AI and LLMs**
-LangChain, LangGraph, AutoGen, Semantic Kernel, Azure AI Foundry, Azure OpenAI Service, GPT-4, Claude (Anthropic), RAG Pipelines, Prompt Engineering, LLM Fine-tuning, Multi-Agent Systems, Function Calling, n8n, Vector DBs (Pinecone, pgvector)
+<samp>python &nbsp; fastapi &nbsp; langgraph &nbsp; rag &nbsp; pgvector &nbsp; postgres &nbsp; pytorch &nbsp; typescript &nbsp; next.js &nbsp; docker &nbsp; aws</samp>
 
-**📊 Machine Learning and Data**
-TensorFlow, PyTorch, Scikit-learn, NLP, Computer Vision, Neural Networks, Deep Learning, Embeddings, PostgreSQL, MySQL, MongoDB, Neon, Data Pipelines
+<img src="./constellation.svg" width="620" alt="The stack, sized by how often I reach for it"/>
 
-**⚙️ Backend and APIs**
-Python (FastAPI, Flask, Django), Java (Spring Boot), RESTful APIs, Microservices, WebSockets, Serverless
+<img src="./hd-projects.svg" width="620" alt="projects"/>
 
-**🎨 Frontend**
-React.js, Next.js, TypeScript, JavaScript, Tailwind CSS
+**autonomous social media orchestrator** &nbsp;·&nbsp; <samp>python, langgraph, heygen</samp><br>
+Trend research to published video with nobody in the loop. Pulls live signal from<br>
+Google Trends, News and Brave Search, writes the script, grades it against its own<br>
+evaluation pass, then renders an avatar video with cloned voice. 22 ms average API<br>
+response on Neon and Railway.
 
-**☁️ DevOps and Cloud**
-Docker, Kubernetes, GitHub Actions, CI/CD, AWS, Railway, MLflow, Model Deployment and Monitoring
+**ai real estate sales agent** &nbsp;·&nbsp; <samp>python, llm, crm</samp><br>
+Qualifies leads in conversation, books the meeting itself once a lead clears the<br>
+bar, and writes the whole thread back to a custom CRM in real time. Admin dashboard<br>
+for listings, services and pipeline.
 
----
+**enterprise chatbot deployment engine** &nbsp;·&nbsp; <samp>python, pgvector, rag</samp><br>
+Point it at your URLs and get a chatbot. Scrapes, chunks, embeds, answers through a<br>
+re-ranked RAG pipeline. Multi-tenant with hard Bot ID isolation and a one-line<br>
+embed snippet.
 
-### 🌟 Featured Projects
+**digital twin for autonomous vehicles** &nbsp;·&nbsp; <samp>python, cnn, yolo</samp><br>
+Graduation project, grade A. Simulated environment where perception runs on raw<br>
+sensor data and the vehicle decides for itself.
 
-#### 🎬 Autonomous Social Media Orchestrator
-A fully autonomous content engine that handles the entire pipeline from trend research to published video — no human in the loop. Pulls live data from Google Trends, Google News, and Brave Search before generating scripts, runs them through a built-in evaluation engine, then produces avatar-based videos via HeyGen with voice cloning and granular character controls. Hits 22 ms average API response time on Neon and Railway.
+These four are client and university work and aren't public. The<br>
+[portfolio](https://ghaith-bassam-zaza.github.io/portfolio/) has writeups; the<br>
+repositories below are what I can show source for.
 
-#### 🏠 AI-Driven Real Estate Sales Agent
-An autonomous sales platform that qualifies leads through natural language conversation, auto-books meetings for human agents once a lead clears the bar, and syncs everything to a custom CRM in real time. Full admin dashboard for listings, services, and pipeline visibility included.
+<img src="./hd-pipeline.svg" width="620" alt="how i build"/>
 
-#### 🤖 Enterprise Chatbot Deployment Engine
-A SaaS platform where anyone can spin up a custom AI chatbot by pointing it at their URLs. Scrapes, chunks, embeds via pgvector, and answers through a RAG pipeline with re-ranking. Multi-tenant with strict Bot ID isolation and an embeddable JS snippet for any website.
+<img src="./pipeline.svg" width="620" alt="The shape of an agent run"/>
 
-#### 🚗 Digital Twin for Autonomous Vehicles (Graduation Project, Grade: A)
-A simulation environment for self-driving vehicles using CNN and YOLO-based perception pipelines for real-time object detection and autonomous decision-making from raw sensor data.
+Every agent I've shipped has this shape. The interesting edge is the one pointing<br>
+backwards: an evaluator that can reject its own planner's work is the difference<br>
+between a demo and something you can leave running. Fan the workers out, judge the<br>
+result, send it round again if it isn't good enough.
 
----
+<img src="./hd-stats.svg" width="620" alt="stats"/>
 
-### 💡 Fun Fact
-I genuinely believe the most interesting engineering problems right now sit at the intersection of AI autonomy and real-world reliability — building systems that can think and act, but that you can actually trust in production. If that resonates with you, let's talk!
+<div align="center">
+
+<img src="./streak.svg" width="620" alt="Current and longest streak"/>
+
+<img src="./langs.svg" width="620" alt="Top languages by bytes and by repo"/>
+
+<img src="./year.svg" width="620" alt="The last year, one character per day"/>
+
+<img src="./timeline.svg" width="620" alt="Public repositories over time"/>
+
+</div>
+
+<img src="./hd-colophon.svg" width="620" alt="about this page"/>
+
+Nothing on this page is loaded from somebody else's server. The stat graphics are<br>
+drawn from the GitHub API by [a scheduled action](.github/workflows/stats.yml),
+committed as files, and redrawn once a day — so there is no badge service here that
+can rate-limit, change its mind, or quietly disappear.
+
+They move using SMIL inside the SVG, because GitHub strips `<script>` from READMEs.
+The section headings are images for the neighbouring reason: GitHub strips CSS too,
+so an image is the only way to get this page's own typeface onto it.
+
+The portrait is a photograph pushed through a character ramp. The fifteen glyphs it
+uses weren't picked by eye — every printable character was rendered in JetBrains
+Mono and measured for ink coverage, then the ones landing closest to evenly spaced
+steps were kept. A face is nearly all midtones, and that is exactly where a
+hand-guessed ramp falls apart. The typeface is subset to only the characters each
+graphic actually draws and inlined as base64, which is not only for looks: the
+portrait's grid assumes an advance width of exactly 0.600 em, and a viewer whose
+default monospace is narrower would see it squeezed.
+
+Language totals cover public repositories only, and if the API can't return all of
+them the chart isn't redrawn at all — a percentage of an incomplete total is just a
+wrong number. `year.svg` uses the same ramp as the portrait, thresholded by quantile
+rather than fixed cutoffs, so a quiet year still has contrast.

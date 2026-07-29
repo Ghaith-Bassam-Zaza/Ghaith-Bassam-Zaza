@@ -1,0 +1,7 @@
+# local review artefacts -- regenerate with scripts/preview.py and rasterize.py
+_render/
+preview.html
+
+__pycache__/
+*.pyc
+.claude/

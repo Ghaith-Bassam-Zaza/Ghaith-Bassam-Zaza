@@ -1,0 +1,8 @@
+# generators
+fonttools>=4.50
+brotli>=1.1          # woff2 output; without it the font falls back to woff
+pillow>=10.0         # gen_portrait.py only
+numpy>=1.26          # gen_portrait.py only
+
+# local review only, not needed in CI
+cairosvg>=2.7

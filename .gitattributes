@@ -1,0 +1,8 @@
+# Generated graphics are compared byte-for-byte by scripts/common.py to decide
+# whether the daily workflow has anything to commit. Line-ending translation on
+# a Windows checkout would make every file look modified, so keep hands off.
+*.svg -text
+
+*.png binary
+*.ttf binary
+*.woff2 binary
