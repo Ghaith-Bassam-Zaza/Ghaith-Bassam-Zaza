@@ -34,11 +34,19 @@ def build(text: str) -> str:
     parts = []
 
     # A small square that snaps in first. It gives the rule something to start
-    # from, so the heading reads as one gesture rather than two.
+    # from, so the heading reads as one gesture rather than two. It also keeps a
+    # slow pulse: the reveal plays at page load, so by the time a reader has
+    # scrolled this far it is long finished, and a heading with a breathing
+    # marker is the cheapest way to show the page is not a screenshot.
     parts.append(
-        f'<rect x="0" y="{BASE - 7}" width="0" height="8" class="hot-f">'
-        f'<animate attributeName="width" from="0" to="8" begin="0.00s" '
-        f'dur="0.22s" fill="freeze"/></rect>'
+        C.wave(
+            f'<rect x="0" y="{BASE - 7}" width="0" height="8" class="hot-f">'
+            f'<animate attributeName="width" from="0" to="8" begin="0.00s" '
+            f'dur="0.22s" fill="freeze"/></rect>',
+            phase=0.0,
+            cycle=3.6,
+            lo=0.30,
+        )
     )
 
     label = C.text(18, BASE, text, size=11.5, cls="emp-f", weight=700, spacing=2.4)

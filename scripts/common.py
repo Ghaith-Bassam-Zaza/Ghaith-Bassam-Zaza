@@ -146,6 +146,34 @@ def reset_ids() -> None:
     _uid[0] = 0
 
 
+def wave(body: str, phase: float, cycle: float = 5.0, lo: float = 0.62,
+         hi: float = 1.0, attr: str = "fill-opacity") -> str:
+    """Wrap `body` in a brightness wave that never stops.
+
+    This exists because of how GitHub serves these files. An SVG inside an
+    <img> gets no script, no scroll position and no IntersectionObserver, so
+    every entrance animation fires the moment the *page* loads -- not when the
+    graphic comes into view. By the time a reader has scrolled to the stack or
+    the stats, those reveals played and froze minutes ago, and the only thing
+    anyone ever sees moving is whatever sits above the fold.
+
+    So the data ink also carries a permanent slow pulse. Phase it by index
+    across a row or a grid and it reads as one wave travelling through the
+    graphic, which is alive whenever you happen to arrive.
+
+    The offset is a *negative* begin rather than a delay: a positive one would
+    leave the element at its base value until the animation kicked in, and the
+    whole set would visibly jump at staggered moments. Negative begin starts
+    every element already mid-cycle.
+    """
+    return (
+        f'<g><animate attributeName="{attr}" values="{lo};{hi};{lo}" '
+        f'keyTimes="0;0.5;1" dur="{cycle:.2f}s" begin="-{phase:.2f}s" '
+        f'repeatCount="indefinite" calcMode="spline" '
+        f'keySplines="0.4 0 0.6 1;0.4 0 0.6 1"/>{body}</g>'
+    )
+
+
 def wipe(body: str, x: float, y: float, w: float, h: float,
          begin: float, dur: float) -> str:
     """Reveal `body` by growing a clip rect left to right.

@@ -63,13 +63,20 @@ def stats_svg(days, s) -> str:
         x = x0 + i * slot
         cls = "hot-f" if v == peak else ("ink-f" if v else "dim-f")
         parts.append(
-            f'<rect x="{x:.1f}" y="{base:.1f}" width="{bw:.1f}" height="0" rx="1.5" '
-            f'class="{cls}"><animate attributeName="height" from="0" to="{h:.1f}" '
-            f'begin="{0.4 + i * 0.05:.2f}s" dur="0.55s" fill="freeze" '
-            f'calcMode="spline" keySplines="0.2 0.8 0.2 1" keyTimes="0;1"/>'
-            f'<animate attributeName="y" from="{base:.1f}" to="{base - h:.1f}" '
-            f'begin="{0.4 + i * 0.05:.2f}s" dur="0.55s" fill="freeze" '
-            f'calcMode="spline" keySplines="0.2 0.8 0.2 1" keyTimes="0;1"/></rect>'
+            C.wave(
+                f'<rect x="{x:.1f}" y="{base:.1f}" width="{bw:.1f}" height="0" '
+                f'rx="1.5" class="{cls}">'
+                f'<animate attributeName="height" from="0" to="{h:.1f}" '
+                f'begin="{0.4 + i * 0.05:.2f}s" dur="0.55s" fill="freeze" '
+                f'calcMode="spline" keySplines="0.2 0.8 0.2 1" keyTimes="0;1"/>'
+                f'<animate attributeName="y" from="{base:.1f}" to="{base - h:.1f}" '
+                f'begin="{0.4 + i * 0.05:.2f}s" dur="0.55s" fill="freeze" '
+                f'calcMode="spline" keySplines="0.2 0.8 0.2 1" keyTimes="0;1"/>'
+                f'</rect>',
+                phase=i * 0.34,
+                cycle=4.6,
+                lo=0.40,
+            )
         )
         parts.append(
             C.fade_in(
@@ -142,7 +149,12 @@ def streak_svg(s) -> str:
         f'<rect x="{2 * cw:.1f}" y="80" width="{cw - 30:.1f}" height="3" rx="1.5" '
         f'class="dim-f" opacity="0.5"/>'
     )
-    parts.append(C.grow_bar(2 * cw, 80, (cw - 30) * frac, 3, 0.9, 0.8, "ink-f"))
+    parts.append(
+        C.wave(
+            C.grow_bar(2 * cw, 80, (cw - 30) * frac, 3, 0.9, 0.8, "ink-f"),
+            phase=0.0, cycle=4.4, lo=0.40,
+        )
+    )
 
     body = "".join(parts)
     return C.svg(W, H, body, _faces(body), title="streaks")
@@ -183,8 +195,13 @@ def _lang_column(entries, x, width, title, fmt, begin, top) -> list[str]:
             f'rx="3" class="dim-f" opacity="0.35"/>'
         )
         parts.append(
-            C.grow_bar(bar_x, y, bar_w * (value / peak), 6, t, 0.85,
-                       "hot-f" if i == 0 else "ink-f", rx=3)
+            C.wave(
+                C.grow_bar(bar_x, y, bar_w * (value / peak), 6, t, 0.85,
+                           "hot-f" if i == 0 else "ink-f", rx=3),
+                phase=i * 0.42 + begin,
+                cycle=4.8,
+                lo=0.42,
+            )
         )
         parts.append(
             C.fade_in(
@@ -305,7 +322,14 @@ def year_svg(days, s) -> str:
                 )
             )
         if glyphs:
-            parts.append(C.fade_in("".join(glyphs), 0.35 + c * 0.016, 0.3))
+            parts.append(
+                C.wave(
+                    C.fade_in("".join(glyphs), 0.35 + c * 0.016, 0.3),
+                    phase=c * 0.085,
+                    cycle=4.4,
+                    lo=0.34,
+                )
+            )
 
     body = "".join(parts)
     return C.svg(W, H, body, _faces(body), title="the year, one character per day")

@@ -149,7 +149,18 @@ def build() -> str:
             for s, txt in runs
         )
         end_x = PAD + last_col * adv
-        parts.append(C.wipe(body, PAD, y, end_x - PAD, LINE_H + 1, t, dur))
+        # A slow scan runs down the face forever. The typewriter reveal only
+        # plays once, and it plays when the *page* loads -- so for anyone who
+        # arrives by scrolling, this is the only motion they will ever see.
+        # Kept shallow: a face dimming to 60% looks broken, not alive.
+        parts.append(
+            C.wave(
+                C.wipe(body, PAD, y, end_x - PAD, LINE_H + 1, t, dur),
+                phase=i * 0.13,
+                cycle=7.0,
+                lo=0.80,
+            )
+        )
         parts.append(
             C.cursor(PAD, end_x, y + 1.5, t, dur, "hot-f", w=adv, h=LINE_H * 0.78)
         )

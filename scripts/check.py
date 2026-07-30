@@ -89,6 +89,41 @@ def check(path: str) -> list[str]:
         if not list(el.iter(f"{{{SVG}}}mpath")):
             problems.append(f"{name}: <animateMotion> with no <mpath>")
 
+    # Spline timing arity. Browsers respond to a mismatch by discarding the
+    # whole animation rather than complaining, so the graphic just sits there --
+    # which is the precise bug the looping waves exist to fix. Worth asserting.
+    for tag in ("animate", "animateTransform"):
+        for el in root.iter(f"{{{SVG}}}{tag}"):
+            if el.get("calcMode") != "spline":
+                continue
+            splines = [s for s in (el.get("keySplines") or "").split(";") if s.strip()]
+            times = [t for t in (el.get("keyTimes") or "").split(";") if t.strip()]
+            vals = [v for v in (el.get("values") or "").split(";") if v.strip()]
+            stops = len(vals) or len(times)
+            if not splines:
+                problems.append(f"{name}: calcMode=spline with no keySplines")
+            elif stops and len(splines) != stops - 1:
+                problems.append(
+                    f"{name}: {len(splines)} keySplines for {stops} stops "
+                    f"(needs {stops - 1}) -- browsers will drop this animation"
+                )
+            for s in splines:
+                nums = s.split()
+                if len(nums) != 4 or not all(0.0 <= float(n) <= 1.0 for n in nums):
+                    problems.append(
+                        f"{name}: keySplines segment '{s.strip()}' is not four "
+                        f"values in 0..1"
+                    )
+
+    # A repeating animation with fill="freeze" is a contradiction: it holds the
+    # final value and stops, so the loop never visibly runs.
+    for el in root.iter(f"{{{SVG}}}animate"):
+        if el.get("repeatCount") == "indefinite" and el.get("fill") == "freeze":
+            problems.append(
+                f"{name}: <animate {el.get('attributeName')}> repeats "
+                f"indefinitely but freezes -- it will play once and stop"
+            )
+
     # --- glyph coverage ----------------------------------------------------
     available = embedded_glyphs(source)
     if available is None:
